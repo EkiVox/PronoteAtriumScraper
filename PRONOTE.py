@@ -49,6 +49,7 @@ class CoursesFetcher:
         #setup chromedriver
         browser = webdriver.Chrome(executable_path='chromedriver',chrome_options=options)
         browser.implicitly_wait(30)
+
     def login(self, identifiant, motdepasse): #Login chrome to atrium and redirect to pronote
         browser.get("https://www.atrium-paca.fr/connexion/login?service=https:%2F%2F0831563Y.index-education.net%2Fpronote%2Fmobile.eleve.html%3Fredirect=1")
         browser.find_element_by_id("username").clear()
@@ -56,6 +57,7 @@ class CoursesFetcher:
         browser.find_element_by_id("password").clear()
         browser.find_element_by_id("password").send_keys(motdepasse)
         browser.find_element_by_name("submit").click()
+
     def fetch(self): #fetch next courses and teachers using pronote
         try:
             assert u"LPO COSTEBELLE - PRONOTE - Espace Élèves" in browser.title
@@ -69,6 +71,7 @@ class CoursesFetcher:
             return cours, profs #return a dictionnary with courses and teachers
         except Exception:
             print "Erreur de connexion ou d'identification"
+            
     def displaying(self, cours, profs): #display the courses and teachers in a table
         os.system('clear')
         print '#####################################'
