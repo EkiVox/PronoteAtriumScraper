@@ -85,7 +85,7 @@ class CoursesFetcher:
         print '#####################################\n'
         raw_input()
 
-    def save(self, courseslist):
+    def saveCourses(self, courseslist): #save courses to last-courses.conf
         try:
             coursesfile = open('last-courses.conf', 'w')
             pickle.dump(courseslist, coursesfile)

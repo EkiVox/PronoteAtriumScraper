@@ -44,7 +44,7 @@ else: #Invalid input
     print "parametre invalide"
     quit()
 
-time.sleep(3)
+
 try:
     print "fetching..."
     courseslist = CoursesFetcher().fetch() #fetch courses and teaches
@@ -52,6 +52,7 @@ try:
     CoursesFetcher().close() #Close browser
     print "affichage..."
     CoursesFetcher().displaying(courseslist[0], courseslist[1]) #display the returned courses and teaches
+    CoursesFetcher().saveCourses(courseslist)
 except:
     print "impossible de recuperer les cours"
     quit()
