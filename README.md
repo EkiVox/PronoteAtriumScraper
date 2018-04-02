@@ -1,2 +1,2 @@
 # PronoteAtriumScraper
-allow to scrap/fetch courses for next day via pronote
+allow to scrap/fetch the next day courses via pronote using atrium authentification
