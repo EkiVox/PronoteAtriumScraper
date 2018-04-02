@@ -10,6 +10,7 @@ from selenium.webdriver.support import expected_conditions as EC
 import os
 import getpass
 import pickle
+import time
 
 #setup headless
 options = webdriver.ChromeOptions()
@@ -22,16 +23,17 @@ class Atrium:
     def storeCreditentials(self, credits):
         try:
             creditsfile = open('creditentials.conf', 'w')
-        except (OSError, IOError):
-            "veuillez creer un fichier creditentials.conf"
-        pickle.dump(credits, creditsfile)
+            pickle.dump(credits, creditsfile)
+        except (OSError, IOError, EOFError):
+            print "veuillez creer un fichier creditentials.conf"
     def reuseCreditentials(self):
         try:
             creditsfile = open('creditentials.conf', 'r')
-        except (OSError, IOError):
-            "veuillez creer un fichier creditentials.conf"
-        credits = pickle.load(creditsfile)
-        return credits
+            credits = pickle.load(creditsfile)
+            return credits
+        except (OSError, IOError, EOFError):
+            print "veuillez creer un fichier creditentials.conf ou alors il est vide"
+        
     def getCreditentials(self):
         USERNAME = raw_input('Username: ')
         PASSWORD = getpass.getpass('Password (no echoing): ')
@@ -48,7 +50,7 @@ class CoursesFetcher:
         options.add_argument('headless')
         #setup chromedriver
         browser = webdriver.Chrome(executable_path='chromedriver',chrome_options=options)
-        browser.implicitly_wait(30)
+        browser.implicitly_wait(15)
 
     def login(self, identifiant, motdepasse): #Login chrome to atrium and redirect to pronote
         browser.get("https://www.atrium-paca.fr/connexion/login?service=https:%2F%2F0831563Y.index-education.net%2Fpronote%2Fmobile.eleve.html%3Fredirect=1")
@@ -60,6 +62,7 @@ class CoursesFetcher:
 
     def fetch(self): #fetch next courses and teachers using pronote
         try:
+            time.sleep(3)
             assert u"LPO COSTEBELLE - PRONOTE - Espace Élèves" in browser.title
             browser.find_element_by_xpath("(//a[contains(text(),'Tout voir')])[2]").click()
 
@@ -81,6 +84,13 @@ class CoursesFetcher:
             print(cours + " : " + profs + '\n')
         print '#####################################\n'
         raw_input()
+
+    def save(self, courseslist):
+        try:
+            coursesfile = open('last-courses.conf', 'w')
+            pickle.dump(courseslist, coursesfile)
+        except (OSError, IOError, EOFError):
+            print "veuillez creer un fichier last-courses.conf"
 
     def close(self): #close the browser for avoid chrome to run in background
         browser.quit()
