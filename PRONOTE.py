@@ -12,9 +12,7 @@ import getpass
 import pickle
 import time
 
-#setup headless
-options = webdriver.ChromeOptions()
-options.add_argument('headless')
+
 
 
 
@@ -49,7 +47,7 @@ class CoursesFetcher:
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
         #setup chromedriver
-        browser = webdriver.Chrome(executable_path='chromedriver',chrome_options=options)
+        browser = webdriver.Chrome(executable_path='./chromedriver',chrome_options=options)
         browser.implicitly_wait(15)
 
     def login(self, identifiant, motdepasse): #Login chrome to atrium and redirect to pronote
