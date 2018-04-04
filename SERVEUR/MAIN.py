@@ -1,9 +1,9 @@
 import time
-from threading import Thread
-from FETCHER import automateFetch
-import SimpleHTTPServer
-import SocketServer
 
+from FETCHER import automateFetch
+import os
+
+os.system("sh startsrv.sh")
 while True:
     automateFetch().automateFetch()
     print "fetched"

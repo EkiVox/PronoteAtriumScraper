@@ -85,7 +85,7 @@ class CoursesFetcher:
 
     def saveCourses(self, courseslist): #save courses to last-courses.conf
         try:
-            coursesfile = open('last-courses.conf', 'w')
+            coursesfile = open('Hosted/last-courses.conf', 'w')
             pickle.dump(courseslist, coursesfile)
         except (OSError, IOError, EOFError):
             print "veuillez creer un fichier last-courses.conf"
