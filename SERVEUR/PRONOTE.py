@@ -47,7 +47,7 @@ class CoursesFetcher:
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
         #setup chromedriver
-        browser = webdriver.Chrome(executable_path='./chromedriver',chrome_options=options)
+        browser = webdriver.Chrome(executable_path='../chromedriver',chrome_options=options)
         browser.implicitly_wait(15)
 
     def login(self, identifiant, motdepasse): #Login chrome to atrium and redirect to pronote
@@ -60,7 +60,7 @@ class CoursesFetcher:
 
     def fetch(self): #fetch next courses and teachers using pronote
         try:
-            time.sleep(3)
+            time.sleep(5)
             assert u"LPO COSTEBELLE - PRONOTE - Espace Élèves" in browser.title
             browser.find_element_by_xpath("(//a[contains(text(),'Tout voir')])[2]").click()
 
