@@ -1,5 +1,6 @@
 import pickle
 import urllib
+import RPi.GPIO
 
 class LedController:
     def downloadCourses(self, ip):
@@ -48,6 +49,21 @@ class LedController:
                 led_to_turn.append(29)
                 
         return led_to_turn
+
+    def LedtoTurnOn(self, ledlist):
+        GP.setmode(GP.BOARD)
+        for i in ledlist:
+            GP.setup(i,GP.OUT)
+            GP.output(i,True)
+
+    def LedtoTurnOff(self, ledlist):
+        GP.setmode(GP.BOARD)
+        for i in ledlist:
+            GP.setup(i,GP.OUT)
+            GP.output(i,False)
+            GP.cleanup()
+
+        
 
 
 """
