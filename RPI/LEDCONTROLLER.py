@@ -57,11 +57,10 @@ class LedController:
             GP.output(i,True)
 
     def LedtoTurnOff(self, ledlist):
-        GP.setmode(GP.BOARD)
         for i in ledlist:
             GP.setup(i,GP.OUT)
             GP.output(i,False)
-            GP.cleanup()
+        GP.cleanup()
 
         
 
