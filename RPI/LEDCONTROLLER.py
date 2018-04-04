@@ -1,6 +1,9 @@
 import pickle
+import urllib
 
 class LedController:
+    def downloadCourses(self, ip):
+        urllib.urlretrieve ("http://" + ip + ":8000/last-courses.conf", "last-courses.conf")
     def getCourses(self):
         try:
             coursesfile = open('last-courses.conf', 'r')
