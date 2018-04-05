@@ -94,3 +94,7 @@ class CoursesFetcher:
         browser.quit()
 
 
+#Xpathdevoircontenu = //*[@id="GInterface.Instances[1].Instances[0]_DetailleTaf_4F3CBA297D4E"]/div[1]/text()
+#Xpath day courses = //*[@id="GInterface.Instances[1].Instances[0]_JourCourant"]/text()
+#nextday course = browse.find_element_by_id("GInterface.Instances[1].Instances[0]_JourSuivant").click()
+
