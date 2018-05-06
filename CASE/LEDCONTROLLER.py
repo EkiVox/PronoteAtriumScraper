@@ -1,17 +1,16 @@
 import pickle
 import urllib
-import RPi.GPIO
+import RPi.GPIO as GP
+import requests
 
 class LedController:
-    def downloadCourses(self, ip):
-        urllib.urlretrieve ("http://" + ip + ":8000/last-courses.conf", "last-courses.conf")
-    def getCourses(self):
-        try:
-            coursesfile = open('last-courses.conf', 'r')
-            courseslist = pickle.load(coursesfile)
-            return courseslist
-        except (OSError, IOError, EOFError):
-            print "veuillez creer un fichier last-courses.conf ou alors il est vide"
+    def fetchCourses(self, ip, id):
+        response = requests.get("http" + ip + ":8000/fetch?id=" + id + "")
+        if response.status_code = 200:
+            return response
+        elif response.status_code = 503:
+            return "IDError"
+
     def HandleCourses(self, list):
         led_to_turn = []
         courses = list[0]
@@ -60,6 +59,8 @@ class LedController:
         for i in ledlist:
             GP.setup(i,GP.OUT)
             GP.output(i,False)
+        GP.cleanup()
+    def exit(self)
         GP.cleanup()
 
         

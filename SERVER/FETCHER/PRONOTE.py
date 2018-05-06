@@ -18,15 +18,16 @@ import time
 
 #Getting Atrium creditentials in terminal class
 class Atrium:
-    def storeCreditentials(self, credits):
+    def storeCreditentials(self,id, credits):
         try:
-            creditsfile = open('creditentials.conf', 'w')
-            pickle.dump(credits, creditsfile)
+            with open('creditentials-' + id + '.conf', 'w') as creditsfile:
+                pickle.dump(credits, creditsfile)
         except (OSError, IOError, EOFError):
             print "veuillez creer un fichier creditentials.conf"
-    def reuseCreditentials(self):
+
+    def reuseCreditentials(self, id):
         try:
-            creditsfile = open('creditentials.conf', 'r')
+            creditsfile = open('creditentials-' + id + '.conf', 'r')
             credits = pickle.load(creditsfile)
             return credits
         except (OSError, IOError, EOFError):
@@ -47,7 +48,7 @@ class CoursesFetcher:
         options = webdriver.ChromeOptions()
         options.add_argument('headless')
         #setup chromedriver
-        browser = webdriver.Chrome(executable_path='../chromedriver',chrome_options=options)
+        browser = webdriver.Chrome(chrome_options=options)
         browser.implicitly_wait(15)
 
     def login(self, identifiant, motdepasse): #Login chrome to atrium and redirect to pronote
@@ -71,7 +72,7 @@ class CoursesFetcher:
             profs = [x.text.encode('ascii','ignore') for x in profsinit] #take the name of teachers and put into a dictionnary
             return cours, profs #return a dictionnary with courses and teachers
         except Exception:
-            print "Erreur de connexion ou d'identification"
+            return "IDError"
             
     def displaying(self, cours, profs): #display the courses and teachers in a table
         os.system('clear')
@@ -83,14 +84,18 @@ class CoursesFetcher:
         print '#####################################\n'
         raw_input()
 
-    def saveCourses(self, courseslist): #save courses to last-courses.conf
+    def saveCourses(self, courseslist, id): #save courses to last-courses.conf
         try:
-            coursesfile = open('last-courses.conf', 'w')
-            pickle.dump(courseslist, coursesfile)
+            with open('last-courses-' + id + '.conf', 'w') as coursesfile:
+                pickle.dump(courseslist, coursesfile)
         except (OSError, IOError, EOFError):
             print "veuillez creer un fichier last-courses.conf"
 
     def close(self): #close the browser for avoid chrome to run in background
         browser.quit()
 
+
+#Xpathdevoircontenu = //*[@id="GInterface.Instances[1].Instances[0]_DetailleTaf_4F3CBA297D4E"]/div[1]/text()
+#Xpath day courses = //*[@id="GInterface.Instances[1].Instances[0]_JourCourant"]/text()
+#nextday course = browse.find_element_by_id("GInterface.Instances[1].Instances[0]_JourSuivant").click()
 
