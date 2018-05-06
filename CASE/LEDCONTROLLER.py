@@ -3,11 +3,12 @@ import urllib
 import RPi.GPIO as GP
 import requests
 
+
 class LedController:
     def fetchCourses(self, ip, id):
         response = requests.get("http" + ip + ":8000/fetch?id=" + id + "")
         if response.status_code = 200:
-            return response
+            return response.json()
         elif response.status_code = 503:
             return "IDError"
 
