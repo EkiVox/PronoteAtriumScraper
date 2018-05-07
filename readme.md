@@ -21,6 +21,8 @@ sh start-server.py
 
 ## API use
 
+
+
 ### `/fetch`, GET
 
 You need to give __ID parameter__.
@@ -63,6 +65,8 @@ It will return:
 ```json
 "Invalid ID or not associated with PRONOTE"
 ```
+
+
 
 ### `/store`, POST
 
