@@ -20,19 +20,18 @@ import time
 class Atrium:
     def storeCreditentials(self,id, credits):
         try:
-            with open('creditentials-' + id + '.conf', 'w') as creditsfile:
+            with open('user/' + id + '/creditentials-' + id + '.conf', 'w') as creditsfile:
                 pickle.dump(credits, creditsfile)
         except (OSError, IOError, EOFError):
             print "veuillez creer un fichier creditentials.conf"
 
     def reuseCreditentials(self, id):
         try:
-            creditsfile = open('creditentials-' + id + '.conf', 'r')
+            creditsfile = open('user/' + id + '/creditentials-' + id + '.conf', 'r')
             credits = pickle.load(creditsfile)
             return credits
         except (OSError, IOError, EOFError):
-            print "veuillez creer un fichier creditentials.conf ou alors il est vide"
-        
+            return "BadID"
     def getCreditentials(self):
         USERNAME = raw_input('Username: ')
         PASSWORD = getpass.getpass('Password (no echoing): ')
@@ -72,7 +71,7 @@ class CoursesFetcher:
             profs = [x.text.encode('ascii','ignore') for x in profsinit] #take the name of teachers and put into a dictionnary
             return cours, profs #return a dictionnary with courses and teachers
         except Exception:
-            return "IDError"
+            return "ConnectionError"
             
     def displaying(self, cours, profs): #display the courses and teachers in a table
         os.system('clear')
@@ -86,7 +85,7 @@ class CoursesFetcher:
 
     def saveCourses(self, courseslist, id): #save courses to last-courses.conf
         try:
-            with open('last-courses-' + id + '.conf', 'w') as coursesfile:
+            with open('user/' + id + '/last-courses-' + id + '.conf', 'w') as coursesfile:
                 pickle.dump(courseslist, coursesfile)
         except (OSError, IOError, EOFError):
             print "veuillez creer un fichier last-courses.conf"
