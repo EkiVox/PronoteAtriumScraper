@@ -1,1 +1,1 @@
-gunicorn MAIN:api
+gunicorn -b 0.0.0.0:8000 MAIN:api
