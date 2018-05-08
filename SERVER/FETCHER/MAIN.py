@@ -34,9 +34,14 @@ class store:
                     result = json.loads(raw_json, encoding='utf-8')
                     if type(result) == list or type(result) == tuple:
                         if len(result) == 2:
-                            status = OPwithID().Store(req.get_param("id"), req.get_param("pw"), result)
-                            resp.status = falcon.HTTP_200
-                            resp.body = json.dumps('Credits Saved')
+                            resultat = OPwithID().Store(req.get_param("id"), req.get_param("pw"), result)
+                            if resultat == "BadID":
+                                resp.status = falcon.HTTP_404
+                                print "[" + req.get_param("id") + "] BadID"
+                                resp.body = json.dumps("Invalid ID or PW or not associated with PRONOTE")      
+                            else:
+                                resp.status = falcon.HTTP_200
+                                resp.body = json.dumps('Credits Saved')
                         else:
                             resp.status = falcon.HTTP_400
                             resp.body = json.dumps('List need 2 parameters')

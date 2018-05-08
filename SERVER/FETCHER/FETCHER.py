@@ -21,8 +21,14 @@ class OPwithID:
         self.hasher = hashlib.md5()
         self.hasher.update(password)
         password = self.hasher.digest()
-        passfile = open('user/' + id + '/password-' + id + '.conf', 'r')
-        stockedpassword = pickle.load(passfile)
-        if stockedpassword == password:
-            Atrium().storeCreditentials(id, credits)
-            print "[" + id + "] credits stocked"
+        try:
+            passfile = open('user/' + id + '/password-' + id + '.conf', 'r')
+            stockedpassword = pickle.load(passfile)
+            if stockedpassword == password:
+                Atrium().storeCreditentials(id, credits)
+                print "[" + id + "] credits stocked"
+                return "OK"
+            else:
+                return "BadID"
+        except:
+            return "BadID"
