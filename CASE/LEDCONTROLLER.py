@@ -20,6 +20,15 @@ class LedController:
             if cours[1] == "Prof. absent":
                 del courses[cours[0]]
                 del teachers[cours[0]]
+            elif cours[1] == "Exceptionnel":
+                courses[cours[0]] = teachers[cours[0]]
+                teachers[cours[0]] = "Indeterminable"
+            elif cours[1] == "Changement de salle":
+                courses[cours[0]] = teachers[cours[0]]
+                teachers[cours[0]] = "Indeterminable"
+            elif cours[1] == "Cours modifié":
+                courses[cours[0]] = teachers[cours[0]]
+                teachers[cours[0]] = "Indeterminable"
         for cours in courses:
             if cours == "PHYS-CHIM.":
                 led_to_turn.append(7)
