@@ -21,7 +21,8 @@ while True:
             print ledlist
             LedController().LedtoTurnOn(ledlist)
             time.sleep(600)
-    except Exception as e:
+    except:
         print "Erreur lors du processus" 
-        print e
+        ledlist = ""
         LedController().exit()
+        time.sleep(1)
