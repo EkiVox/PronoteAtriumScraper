@@ -1,7 +1,7 @@
 #-*- coding: utf-8 -*-
 from LEDCONTROLLER import LedController
 import time
-ledlist = [0]
+ledlist = ""
 while True:
     try:
         idfile = open("identifiant.conf", "r")
@@ -13,11 +13,15 @@ while True:
         elif list == "BadID":
             print "Mauvais ID"
         else:
-            LedController().LedtoTurnOff(ledlist)
+            if ledlist == "":
+                print ""
+            else:
+                LedController().LedtoTurnOff(ledlist)
             ledlist = LedController().HandleCourses(list)
             print ledlist
             LedController().LedtoTurnOn(ledlist)
             time.sleep(600)
     except Exception as e:
-        print "Erreur lors du processus" + e
+        print "Erreur lors du processus" 
+        print e
         LedController().exit()

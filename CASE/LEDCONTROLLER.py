@@ -3,7 +3,7 @@ import pickle
 import urllib
 import RPi.GPIO as GP
 import requests
-
+GP.setmode(GP.BOARD)
 
 class LedController:
     def fetchCourses(self, ip, id):
@@ -36,7 +36,7 @@ class LedController:
         print courses
         for cours in courses:
             if cours == "PHYS-CHIM.":
-                led_to_turn.append(7)
+                led_to_turn.append(35)
 
             elif cours == "ACCOMPAGNEMT. PERSO.":
                 led_to_turn.append(11)
@@ -60,7 +60,7 @@ class LedController:
                 led_to_turn.append(22)
 
             elif cours == "ANG. LV1":
-                led_to_turn.append(29)
+                led_to_turn.append(37)
                 
         return led_to_turn
 
@@ -75,7 +75,7 @@ class LedController:
             GP.setup(i,GP.OUT)
             GP.output(i,False)
         GP.cleanup()
-    def exit(self)
+    def exit(self):
         GP.cleanup()
 
         
