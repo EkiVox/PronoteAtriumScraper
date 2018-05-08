@@ -1,3 +1,4 @@
+#-*- coding: utf-8 -*-
 import pickle
 import urllib
 import RPi.GPIO as GP
@@ -6,18 +7,21 @@ import requests
 
 class LedController:
     def fetchCourses(self, ip, id):
-        response = requests.get("http" + ip + ":8000/fetch?id=" + id + "")
-        if response.status_code = 200:
+        response = requests.get("http://" + ip + ":8000/fetch?id=" + id + "")
+        print response
+        if response.status_code == 200:
             return response.json()
-        elif response.status_code = 503:
+        elif response.status_code == 503:
             return "IDError"
+        elif response.status_code == 404:
+            return "BadID"
 
     def HandleCourses(self, list):
         led_to_turn = []
         courses = list[0]
         teachers = list[1]
         for cours in enumerate(courses):
-            if cours[1] == "Prof. absent":
+            if cours[1] == "Prof. absent" or cours[1] == "Cours annul":
                 del courses[cours[0]]
                 del teachers[cours[0]]
             elif cours[1] == "Exceptionnel":
@@ -26,9 +30,10 @@ class LedController:
             elif cours[1] == "Changement de salle":
                 courses[cours[0]] = teachers[cours[0]]
                 teachers[cours[0]] = "Indeterminable"
-            elif cours[1] == "Cours modifié":
+            elif cours[1] == u"Cours modifi":
                 courses[cours[0]] = teachers[cours[0]]
                 teachers[cours[0]] = "Indeterminable"
+        print courses
         for cours in courses:
             if cours == "PHYS-CHIM.":
                 led_to_turn.append(7)

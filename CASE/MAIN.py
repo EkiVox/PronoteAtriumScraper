@@ -1,17 +1,23 @@
+#-*- coding: utf-8 -*-
 from LEDCONTROLLER import LedController
 import time
+ledlist = [0]
 while True:
-    
-    list = LedController().fetchCourses("155.133.131.126")
-    if list == "IDError":
-        print "Erreur d'acces au serveur ou d'identifiant"
-    else:
-        try:
+    try:
+        idfile = open("identifiant.conf", "r")
+        id = idfile.read().replace("\n","")
+        idfile.close()
+        list = LedController().fetchCourses("sccase.tk", id)
+        if list == "IDError":
+            print "Erreur d'acces au serveur ou d'identifiant"
+        elif list == "BadID":
+            print "Mauvais ID"
+        else:
             LedController().LedtoTurnOff(ledlist)
             ledlist = LedController().HandleCourses(list)
             print ledlist
             LedController().LedtoTurnOn(ledlist)
             time.sleep(600)
-        except:
-            print "erreur"
-            LedController().exit()
+    except Exception as e:
+        print "Erreur lors du processus" + e
+        LedController().exit()
