@@ -1,7 +1,10 @@
 #-*- coding: utf-8 -*-
 from LEDCONTROLLER import LedController
 import time
+import alsaaudio as audio
+import signal
 
+some_value = 2000
 i = 0
 ledlist = ""
 oldangle = 0
@@ -39,6 +42,22 @@ def flick(start,finish):
         handling(i)
         print "handling " + str(i)
 
+
+
+mixer = audio.Mixer('PCM', cardindex=0)
+@skywriter.airwheel()
+def spinny(delta):
+    global some_value
+    some_value += delta
+    if some_value < 0:
+        some_value = 0
+    if some_value > 4000:
+        some_value = 4000
+    print('Airwheel:', some_value/40)
+    print mixer.getvolume()
+    mixer.setvolume(int(some_value/40))
+
+signal.pause()
 #def spinny(delta):
 #    angle += delta
 #    print angle
