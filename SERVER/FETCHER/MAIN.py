@@ -8,6 +8,10 @@ class fetch:
                 day = req.get_param("day")
             else:
                 day = 0
+            try:
+                day = int(day)
+            except ValueError: 
+                day = 0
             print "[" + req.get_param("id") + "] received get"
             quote = OPwithID().Fetch(req.get_param("id"), day)
             if quote == "ConnectionError":
