@@ -45,7 +45,7 @@ class CoursesFetcher:
         global options
         #setup headless
         options = webdriver.ChromeOptions()
-        options.add_argument('headless')
+        #options.add_argument('headless')
         #setup chromedriver
         browser = webdriver.Chrome(chrome_options=options)
         browser.implicitly_wait(15)
@@ -58,11 +58,30 @@ class CoursesFetcher:
         browser.find_element_by_id("password").send_keys(motdepasse)
         browser.find_element_by_name("submit").click()
 
-    def fetch(self): #fetch next courses and teachers using pronote
+    def fetch(self,day): #fetch next courses and teachers using pronote
         try:
             time.sleep(5)
             assert u"LPO COSTEBELLE - PRONOTE - Espace Élèves" in browser.title
             browser.find_element_by_xpath("(//a[contains(text(),'Tout voir')])[2]").click()
+            day = int(day)
+            if day < 0:
+                day = -1*day
+                for x in range(day):
+                    if x == 0:
+                        time.sleep(0.5)
+                    time.sleep(0.5)
+                    browser.find_element_by_id("GInterface.Instances[1].Instances[0]_JourPrecedent").click()
+                    if x == day-1:
+                        time.sleep(1.5)
+
+            elif day > 0:
+                for x in range(day):
+                    if x == 0:
+                        time.sleep(0.5)
+                    time.sleep(0.5)
+                    browser.find_element_by_id("GInterface.Instances[1].Instances[0]_JourSuivant").click()
+                    if x == day-1:
+                            time.sleep(1.5)
 
             coursinit = browser.find_elements_by_xpath("//*[@id='GInterface.Instances[1].Instances[2]']/ul/li/div/div[1]") #fetch courses
             cours = [x.text.encode('ascii','ignore') for x in coursinit] #take the name of courses and put into a dictionnary

@@ -6,14 +6,14 @@ import hashlib
 
 
 class OPwithID:
-    def Fetch(self, id):
+    def Fetch(self, id, day):
         creditentials = Atrium().reuseCreditentials(id)
         if creditentials == "BadID":
             return creditentials
         else:
             CoursesFetcher().initialize()
             CoursesFetcher().login(creditentials[0], creditentials[1])
-            courseslist = CoursesFetcher().fetch() #fetch courses and teachers
+            courseslist = CoursesFetcher().fetch(day) #fetch courses and teachers
             CoursesFetcher().close() #Close browser
             return courseslist
 

@@ -4,8 +4,12 @@ import json
 class fetch:
     def on_get(self, req, resp):
         if req.get_param("id"):
+            if req.get_param("day"):
+                day = req.get_param("day")
+            else:
+                day = 0
             print "[" + req.get_param("id") + "] received get"
-            quote = OPwithID().Fetch(req.get_param("id"))
+            quote = OPwithID().Fetch(req.get_param("id"), day)
             if quote == "ConnectionError":
                 resp.status = falcon.HTTP_503
                 print "[" + req.get_param("id") + "] ConnectionError"
