@@ -7,7 +7,7 @@ GP.setmode(GP.BCM)
 
 class LedController:
     def fetchCourses(self, ip, id, day):
-        response = requests.get("http://" + ip + ":8000/fetch?id=" + id + "&?day=" + day + "")
+        response = requests.get("http://" + ip + ":8000/fetch?id=" + id + "&day=" + str(day) + "")
         print response
         if response.status_code == 200:
             return response.json()
@@ -33,7 +33,7 @@ class LedController:
             elif cours[1] == u"Cours modifi":
                 courses[cours[0]] = teachers[cours[0]]
                 teachers[cours[0]] = "Indeterminable"
-        print courses
+        #print courses
         for cours in courses:
             if cours == "PHYS-CHIM.":
                 led_to_turn.append(19)
@@ -65,13 +65,14 @@ class LedController:
         return led_to_turn
 
     def LedtoTurnOn(self, ledlist):
-        GP.setmode(GP.BOARD)
         for i in ledlist:
+            GP.setmode(GP.BCM)
             GP.setup(i,GP.OUT)
             GP.output(i,True)
 
     def LedtoTurnOff(self, ledlist):
         for i in ledlist:
+            GP.setmode(GP.BCM)
             GP.setup(i,GP.OUT)
             GP.output(i,False)
         GP.cleanup()

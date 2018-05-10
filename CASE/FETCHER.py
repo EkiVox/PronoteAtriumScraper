@@ -1,6 +1,7 @@
 import pickle
 import time
 import os
+import shutil
 from LEDCONTROLLER import LedController
 
 while True:
@@ -9,16 +10,23 @@ while True:
             idfile = open("identifiant.conf", "r")
             id = idfile.read().replace("\n","")
             idfile.close()
-            list = LedController().fetchCourses("sccase.tk", id, i)
+            print "day " + str(i)
+            list = LedController().fetchCourses("sccase.tk", id, str(i))
             if list == "IDError":
                 print "Erreur d'acces au serveur ou d'identifiant"
             elif list == "BadID":
                 print "Mauvais ID"
             else:
-                os.makedirs('courses/day' + i + '/')
-                with open('courses/day' + i + '/courses.list', 'w') as coursesfile:
+                try:
+                    shutil.rmtree('courses/day' + str(i) + '/')
+                except:
+                    print ""
+                os.makedirs('courses/day' + str(i) + '/')
+                with open('courses/day' + str(i) + '/courses.list', 'w') as coursesfile:
                     pickle.dump(list, coursesfile)
-        except:
-            print "Erreur lors du processus" 
+                time.sleep(5)
+        except Exception as e:
+            print "Erreur lors du processus"
+            print e 
             time.sleep(1)
     time.sleep(600)
