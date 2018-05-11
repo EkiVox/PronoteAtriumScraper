@@ -35,11 +35,15 @@ def flick(start,finish):
     global i
     print('Got a flick!', start, finish)
     if start == "east" and finish == "west":
-        i = i+1
+        i = i-1
+        if i == -11:
+            i = -10
         handling(i)
         print "handling " + str(i)
     elif start == "west" and finish == "east":
-        i = i-1
+        i = i+1
+        if i == 11:
+            i = 10
         handling(i)
         print "handling " + str(i)
     elif start == "south" and finish == "north":
