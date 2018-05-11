@@ -3,6 +3,9 @@ from LEDCONTROLLER import LedController
 import time
 import alsaaudio as audio
 import signal
+import pickle
+
+import skywriter
 
 some_value = 2000
 i = 0
@@ -12,19 +15,21 @@ angle = 0
 
 def handling(i):
     try:
+        global ledlist
         if ledlist != "":
             LedController().LedtoTurnOff(ledlist)
-        with open('courses/day' + i + '/courses.list', 'r') as coursesfile:
+        with open('courses/day' + str(i) + '/courses.list', 'r') as coursesfile:
             list  = pickle.load(coursesfile)
         ledlist = LedController().HandleCourses(list)
         print ledlist
         LedController().LedtoTurnOn(ledlist)
-    except:
+    except Exception as e:
         print "Erreur lors du processus" 
         ledlist = ""
+        print e
         LedController().exit()
         time.sleep(1)
-    
+
 @skywriter.flick()
 def flick(start,finish):
     global i
@@ -45,6 +50,7 @@ def flick(start,finish):
 
 
 mixer = audio.Mixer('PCM', cardindex=0)
+
 @skywriter.airwheel()
 def spinny(delta):
     global some_value
@@ -56,6 +62,9 @@ def spinny(delta):
     print('Airwheel:', some_value/40)
     print mixer.getvolume()
     mixer.setvolume(int(some_value/40))
+
+
+handling(0)
 
 signal.pause()
 #def spinny(delta):

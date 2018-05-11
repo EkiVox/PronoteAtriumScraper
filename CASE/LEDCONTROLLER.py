@@ -3,7 +3,6 @@ import pickle
 import urllib
 import RPi.GPIO as GP
 import requests
-GP.setmode(GP.BCM)
 
 class LedController:
     def fetchCourses(self, ip, id, day):
@@ -75,12 +74,9 @@ class LedController:
             GP.setmode(GP.BCM)
             GP.setup(i,GP.OUT)
             GP.output(i,False)
-        GP.cleanup()
+
     def exit(self):
         GP.cleanup()
-
-        
-
 
 """
 PHYS-CHIM.
