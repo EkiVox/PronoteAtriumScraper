@@ -7,12 +7,9 @@ import pickle
 
 import skywriter
 
-some_value = 2000
+some_value = 3500
 i = 0
 ledlist = ""
-oldangle = 0
-angle = 0
-
 def handling(i):
     try:
         global ledlist
@@ -67,7 +64,7 @@ def spinny(delta):
     print mixer.getvolume()
     mixer.setvolume(int(some_value/40))
 
-
+mixer.setvolume(87)
 handling(0)
 
 signal.pause()
