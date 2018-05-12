@@ -4,6 +4,13 @@ import urllib
 import RPi.GPIO as GP
 import requests
 
+allledlist = [13, 18, 19, 20, 21, 23, 24, 25, 26]
+
+GP.setmode(GP.BCM)
+for i in allledlist:
+    GP.setup(i,GP.OUT)
+    GP.PWM(i, 500)
+    p.start(0)
 class LedController:
     def fetchCourses(self, ip, id, day):
         response = requests.get("http://" + ip + ":8000/fetch?id=" + id + "&day=" + str(day) + "")
@@ -63,17 +70,16 @@ class LedController:
                 
         return led_to_turn
 
-    def LedtoTurnOn(self, ledlist):
+    def LedtoTurnOn(self, ledlist, [dim]):
         for i in ledlist:
-            GP.setmode(GP.BCM)
-            GP.setup(i,GP.OUT)
-            GP.output(i,True)
+            try:
+                GP.PWM(i, 500).ChangeDutyCycle(dim)
+            except:
+                GP.PWM(i, 500).ChangeDutyCycle(100)
 
     def LedtoTurnOff(self, ledlist):
         for i in ledlist:
-            GP.setmode(GP.BCM)
-            GP.setup(i,GP.OUT)
-            GP.output(i,False)
+            GP.PWM(i, 500).ChangeDutyCycle(0)
 
     def exit(self):
         GP.cleanup()

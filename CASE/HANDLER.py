@@ -79,17 +79,16 @@ def flick(start,finish):
             if isplaying == False
                 os.system("mpc play")
                 isplaying = True
-                LedController().LedtoTurnOn([13, 18, 19, 20, 21, 23, 24, 25, 26])
             elif isplaying == True:
                 os.system("mpc pause")
                 isplaying = False
-                LedController().LedtoTurnOff([13, 18, 19, 20, 21, 23, 24, 25, 26])
 
 
 mixer = audio.Mixer('PCM', cardindex=0)
 
 @skywriter.airwheel()
 def spinny(delta):
+    global ledlist
     global some_value
     some_value += delta
     if some_value < 0:
@@ -97,8 +96,12 @@ def spinny(delta):
     if some_value > 4000:
         some_value = 4000
     print('Airwheel:', some_value/40)
-    print mixer.getvolume()
-    mixer.setvolume(int(some_value/40))
+    if menu == "music":
+        print mixer.getvolume()
+        mixer.setvolume(int(some_value/40))
+        LedController().LedtoTurnOn([13, 18, 19, 20, 21, 23, 24, 25, 26], int(some_value/40))
+    elif menu == "led":
+        LedController().LedtoTurnOn(ledlist, int(some_value/40))
 
 mixer.setvolume(87)
 handling(0)
