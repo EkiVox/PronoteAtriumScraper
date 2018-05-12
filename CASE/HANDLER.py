@@ -77,7 +77,7 @@ def flick(start,finish):
             LedController().LedtoTurnOff(allled)
             for led in allled:
                 LedController().LedtoTurnOn([led], 100)
-                time.sleep(0.1)
+                time.sleep(0.02)
         elif menu == "music":
             if isplaying == False:
                 os.system("mpc toggle")
