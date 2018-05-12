@@ -23,7 +23,7 @@ def handling(i):
             list  = pickle.load(coursesfile)
         ledlist = LedController().HandleCourses(list)
         print ledlist
-        LedController().LedtoTurnOn(ledlist)
+        LedController().LedtoTurnOn(ledlist,100)
     except Exception as e:
         print "Erreur lors du processus" 
         ledlist = ""
@@ -65,6 +65,7 @@ def flick(start,finish):
             handling(i)
             print "handling " + str(i)
         elif menu == "music":
+            i = 0
             menu = "led"
             handling(i)
             print "handling " + str(i)
@@ -72,11 +73,11 @@ def flick(start,finish):
     elif start == "north" and finish == "south":
         if menu == "led":
             menu = "music"
-            for i in allled:
-                LedController().LedtoTurnOn([i])
+            for led in allled:
+                LedController().LedtoTurnOn([led], 100)
                 time.sleep(0.2)
         elif menu == "music":
-            if isplaying == False
+            if isplaying == False:
                 os.system("mpc play")
                 isplaying = True
             elif isplaying == True:

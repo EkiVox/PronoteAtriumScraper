@@ -9,8 +9,9 @@ allledlist = [13, 18, 19, 20, 21, 23, 24, 25, 26]
 GP.setmode(GP.BCM)
 for i in allledlist:
     GP.setup(i,GP.OUT)
-    GP.PWM(i, 500)
-    p.start(0)
+    globals()["p" + str(i)] = GP.PWM(i, 500)
+    globals()["p" + str(i)].start(0)
+
 class LedController:
     def fetchCourses(self, ip, id, day):
         response = requests.get("http://" + ip + ":8000/fetch?id=" + id + "&day=" + str(day) + "")
@@ -70,16 +71,16 @@ class LedController:
                 
         return led_to_turn
 
-    def LedtoTurnOn(self, ledlist, [dim]):
+    def LedtoTurnOn(self, ledlist, dim):
         for i in ledlist:
             try:
-                GP.PWM(i, 500).ChangeDutyCycle(dim)
+                globals()["p" + str(i)].ChangeDutyCycle(dim)
             except:
-                GP.PWM(i, 500).ChangeDutyCycle(100)
+                globals()["p" + str(i)].ChangeDutyCycle(100)
 
     def LedtoTurnOff(self, ledlist):
         for i in ledlist:
-            GP.PWM(i, 500).ChangeDutyCycle(0)
+            globals()["p" + str(i)].ChangeDutyCycle(0)
 
     def exit(self):
         GP.cleanup()
