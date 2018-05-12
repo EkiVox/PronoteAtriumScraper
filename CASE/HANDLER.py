@@ -4,12 +4,16 @@ import time
 import alsaaudio as audio
 import signal
 import pickle
-
+import os
 import skywriter
 
+menu = "led"
 some_value = 3500
 i = 0
 ledlist = ""
+allled = [13, 18, 19, 20, 21, 23, 24, 25, 26]
+isplaying = False
+
 def handling(i):
     try:
         global ledlist
@@ -30,24 +34,56 @@ def handling(i):
 @skywriter.flick()
 def flick(start,finish):
     global i
+    global menu
+    global allled
+    global isplaying
+
     print('Got a flick!', start, finish)
     if start == "east" and finish == "west":
-        i = i-1
-        if i == -11:
-            i = -10
-        handling(i)
-        print "handling " + str(i)
-    elif start == "west" and finish == "east":
-        i = i+1
-        if i == 11:
-            i = 10
-        handling(i)
-        print "handling " + str(i)
-    elif start == "south" and finish == "north":
-        i = 0
-        handling(i)
-        print "handling " + str(i)
+        if menu == "led":
+            i = i-1
+            if i == -11:
+                i = -10
+            handling(i)
+            print "handling " + str(i)
+        elif menu == "music":
+            os.system("mpc prev")
 
+    elif start == "west" and finish == "east":
+        if menu == "led":
+            i = i+1
+            if i == 11:
+                i = 10
+            handling(i)
+            print "handling " + str(i)
+        elif menu == "music":
+            os.system("mpc next")
+
+    elif start == "south" and finish == "north":
+        if menu == "led":
+            i = 0
+            handling(i)
+            print "handling " + str(i)
+        elif menu == "music":
+            menu = "led"
+            handling(i)
+            print "handling " + str(i)
+
+    elif start == "north" and finish == "south":
+        if menu == "led":
+            menu = "music"
+            for i in allled:
+                LedController().LedtoTurnOn([i])
+                time.sleep(0.2)
+        elif menu == "music":
+            if isplaying == False
+                os.system("mpc play")
+                isplaying = True
+                LedController().LedtoTurnOn([13, 18, 19, 20, 21, 23, 24, 25, 26])
+            elif isplaying == True:
+                os.system("mpc pause")
+                isplaying = False
+                LedController().LedtoTurnOff([13, 18, 19, 20, 21, 23, 24, 25, 26])
 
 
 mixer = audio.Mixer('PCM', cardindex=0)
