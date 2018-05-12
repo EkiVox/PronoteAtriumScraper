@@ -9,10 +9,12 @@ import skywriter
 
 menu = "led"
 some_value = 7000
+some_value2 = 4000
 i = 0
 ledlist = ""
 allled = [13, 18, 19, 20, 21, 23, 24, 25, 26]
 isplaying = False
+dimming = 100
 
 def handling(i):
     try:
@@ -23,7 +25,7 @@ def handling(i):
             list  = pickle.load(coursesfile)
         ledlist = LedController().HandleCourses(list)
         print ledlist
-        LedController().LedtoTurnOn(ledlist,100)
+        LedController().LedtoTurnOn(ledlist,dimming)
     except Exception as e:
         print "Erreur lors du processus" 
         ledlist = ""
@@ -91,18 +93,26 @@ mixer = audio.Mixer('PCM', cardindex=0)
 def spinny(delta):
     global ledlist
     global some_value
-    some_value += delta
-    if some_value < 0:
-        some_value = 0
-    if some_value > 8000:
-        some_value = 8000
-    print('Airwheel:', some_value/80)
+    global some_value2
+    global dimming
     if menu == "music":
-        print mixer.getvolume()
+        some_value += delta
+        if some_value < 0:
+            some_value = 0
+        if some_value > 8000:
+            some_value = 8000
+        print('New volume:', some_value/80)
         mixer.setvolume(int(some_value/80))
-        LedController().LedtoTurnOn([13, 18, 19, 20, 21, 23, 24, 25, 26], int(some_value/80))
+        LedController().LedtoTurnOn(allled, int(some_value/80))
+
     elif menu == "led":
-        LedController().LedtoTurnOn(ledlist, int(some_value/80))
+        some_value2 += delta
+        if some_value2 < 0:
+            some_value2 = 0
+        if some_value2 > 4000:
+            some_value2 = 4000
+        dimming = int(some_value2/40)
+        LedController().LedtoTurnOn(ledlist, dimming)
 
 mixer.setvolume(87)
 handling(0)
