@@ -8,7 +8,7 @@ import os
 import skywriter
 
 menu = "led"
-some_value = 3500
+some_value = 7000
 i = 0
 ledlist = ""
 allled = [13, 18, 19, 20, 21, 23, 24, 25, 26]
@@ -93,15 +93,15 @@ def spinny(delta):
     some_value += delta
     if some_value < 0:
         some_value = 0
-    if some_value > 4000:
-        some_value = 4000
-    print('Airwheel:', some_value/40)
+    if some_value > 8000:
+        some_value = 8000
+    print('Airwheel:', some_value/80)
     if menu == "music":
         print mixer.getvolume()
-        mixer.setvolume(int(some_value/40))
-        LedController().LedtoTurnOn([13, 18, 19, 20, 21, 23, 24, 25, 26], int(some_value/40))
+        mixer.setvolume(int(some_value/80))
+        LedController().LedtoTurnOn([13, 18, 19, 20, 21, 23, 24, 25, 26], int(some_value/80))
     elif menu == "led":
-        LedController().LedtoTurnOn(ledlist, int(some_value/40))
+        LedController().LedtoTurnOn(ledlist, int(some_value/80))
 
 mixer.setvolume(87)
 handling(0)
