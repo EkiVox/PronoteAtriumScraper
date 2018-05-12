@@ -13,14 +13,13 @@ some_value2 = 4000
 i = 0
 ledlist = ""
 allled = [13, 18, 19, 20, 21, 23, 24, 25, 26]
-isplaying = False
+isplaying = True
 dimming = 100
 
 def handling(i):
     try:
         global ledlist
-        if ledlist != "":
-            LedController().LedtoTurnOff(ledlist)
+        LedController().LedtoTurnOff(allled)
         with open('courses/day' + str(i) + '/courses.list', 'r') as coursesfile:
             list  = pickle.load(coursesfile)
         ledlist = LedController().HandleCourses(list)
@@ -75,15 +74,16 @@ def flick(start,finish):
     elif start == "north" and finish == "south":
         if menu == "led":
             menu = "music"
+            LedController().LedtoTurnOff(allled)
             for led in allled:
                 LedController().LedtoTurnOn([led], 100)
-                time.sleep(0.2)
+                time.sleep(0.1)
         elif menu == "music":
             if isplaying == False:
-                os.system("mpc play")
+                os.system("mpc toggle")
                 isplaying = True
             elif isplaying == True:
-                os.system("mpc pause")
+                os.system("mpc toggle")
                 isplaying = False
 
 
@@ -107,8 +107,8 @@ def spinny(delta):
 
     elif menu == "led":
         some_value2 += delta
-        if some_value2 < 0:
-            some_value2 = 0
+        if some_value2 < 5:
+            some_value2 = 5
         if some_value2 > 4000:
             some_value2 = 4000
         dimming = int(some_value2/40)
