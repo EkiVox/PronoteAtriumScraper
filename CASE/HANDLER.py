@@ -77,7 +77,7 @@ def flick(start,finish):
             LedController().LedtoTurnOff(allled)
             for led in allled:
                 LedController().LedtoTurnOn([led], 100)
-                time.sleep(0.02)
+                time.sleep(0.05)
         elif menu == "music":
             if isplaying == False:
                 os.system("mpc toggle")
@@ -101,16 +101,17 @@ def spinny(delta):
             some_value = 0
         if some_value > 8000:
             some_value = 8000
-        print('New volume:', some_value/80)
+        print('New volume: ', some_value/80)
         mixer.setvolume(int(some_value/80))
         LedController().LedtoTurnOn(allled, int(some_value/80))
 
     elif menu == "led":
         some_value2 += delta
-        if some_value2 < 5:
-            some_value2 = 5
+        if some_value2 < 50:
+            some_value2 = 50
         if some_value2 > 4000:
             some_value2 = 4000
+        print("New duty cycle: ", some_value2/40)
         dimming = int(some_value2/40)
         LedController().LedtoTurnOn(ledlist, dimming)
 

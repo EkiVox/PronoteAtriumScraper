@@ -9,7 +9,7 @@ allledlist = [13, 18, 19, 20, 21, 23, 24, 25, 26]
 GP.setmode(GP.BCM)
 for i in allledlist:
     GP.setup(i,GP.OUT)
-    globals()["p" + str(i)] = GP.PWM(i, 500)
+    globals()["p" + str(i)] = GP.PWM(i, 1000)
     globals()["p" + str(i)].start(0)
 
 class LedController:

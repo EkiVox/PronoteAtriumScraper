@@ -16,7 +16,7 @@ while True:
                 print "Erreur d'acces au serveur ou d'identifiant"
             elif list == "BadID":
                 print "Mauvais ID"
-            else:
+            elif type(list) == list:
                 try:
                     shutil.rmtree('courses/day' + str(i) + '/')
                 except:
@@ -25,6 +25,8 @@ while True:
                 with open('courses/day' + str(i) + '/courses.list', 'w') as coursesfile:
                     pickle.dump(list, coursesfile)
                 time.sleep(5)
+            else:
+                "Erreur lors du processus, la reponse fourni par le serveur est intraitable"
         except Exception as e:
             print "Erreur lors du processus"
             print e 
