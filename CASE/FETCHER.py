@@ -11,19 +11,21 @@ while True:
             id = idfile.read().replace("\n","")
             idfile.close()
             print "day " + str(i)
-            list = LedController().fetchCourses("sccase.tk", id, str(i))
-            if list == "IDError":
+            clist = LedController().fetchCourses("sccase.tk", id, str(i))
+            if clist == "IDError":
                 print "Erreur d'acces au serveur ou d'identifiant"
-            elif list == "BadID":
+            elif clist == "BadID":
                 print "Mauvais ID"
-            elif type(list) == list:
+            elif type(clist) == list or type(clist) == tuple:
                 try:
                     shutil.rmtree('courses/day' + str(i) + '/')
                 except:
                     print ""
                 os.makedirs('courses/day' + str(i) + '/')
                 with open('courses/day' + str(i) + '/courses.list', 'w') as coursesfile:
-                    pickle.dump(list, coursesfile)
+                    pickle.dump(clist, coursesfile)
+                print "Courses stored"
+                print "\n\n\n"
                 time.sleep(5)
             else:
                 "Erreur lors du processus, la reponse fourni par le serveur est intraitable"

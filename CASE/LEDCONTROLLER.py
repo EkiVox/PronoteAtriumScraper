@@ -5,12 +5,13 @@ import RPi.GPIO as GP
 import requests
 
 allledlist = [13, 18, 19, 20, 21, 23, 24, 25, 26]
-
-GP.setmode(GP.BCM)
-for i in allledlist:
-    GP.setup(i,GP.OUT)
-    globals()["p" + str(i)] = GP.PWM(i, 1000)
-    globals()["p" + str(i)].start(0)
+def initializer():
+    global allledlist
+    GP.setmode(GP.BCM)
+    for i in allledlist:
+        GP.setup(i,GP.OUT)
+        globals()["p" + str(i)] = GP.PWM(i, 1000)
+        globals()["p" + str(i)].start(0)
 
 class LedController:
     def fetchCourses(self, ip, id, day):
@@ -84,7 +85,8 @@ class LedController:
 
     def exit(self):
         GP.cleanup()
-
+    def BCM(self):
+        GP.setmode(GP.BCM)
 """
 PHYS-CHIM.
 ACCOMPAGNEMT. PERSO.

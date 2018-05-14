@@ -1,5 +1,6 @@
 #-*- coding: utf-8 -*-
 from LEDCONTROLLER import LedController
+from LEDCONTROLLER import initializer
 import time
 import alsaaudio as audio
 import signal
@@ -15,21 +16,28 @@ ledlist = ""
 allled = [13, 18, 19, 20, 21, 23, 24, 25, 26]
 isplaying = True
 dimming = 100
+initializer()
 
 def handling(i):
     try:
         global ledlist
         LedController().LedtoTurnOff(allled)
         with open('courses/day' + str(i) + '/courses.list', 'r') as coursesfile:
-            list  = pickle.load(coursesfile)
-        ledlist = LedController().HandleCourses(list)
-        print ledlist
-        LedController().LedtoTurnOn(ledlist,dimming)
+            clist  = pickle.load(coursesfile)
+        if type(clist) == list:
+            ledlist = LedController().HandleCourses(clist)
+            print ledlist
+            if type(ledlist) == list or type(ledlist) == tuple:
+                LedController().LedtoTurnOn(ledlist,dimming)
+            else:
+                print "LedList not acceptable"
+        else:
+            print "List not acceptable"
+            print clist
     except Exception as e:
         print "Erreur lors du processus" 
         ledlist = ""
         print e
-        LedController().exit()
         time.sleep(1)
 
 @skywriter.flick()
@@ -117,8 +125,10 @@ def spinny(delta):
 
 mixer.setvolume(87)
 handling(0)
-
-signal.pause()
+try:
+    signal.pause()
+except:
+    LedController().exit()
 #def spinny(delta):
 #    angle += delta
 #    print angle
