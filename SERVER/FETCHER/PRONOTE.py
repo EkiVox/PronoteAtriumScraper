@@ -70,7 +70,7 @@ class CoursesFetcher:
                     if x == 0:
                         time.sleep(0.5)
                     time.sleep(0.5)
-                    browser.find_element_by_id("GInterface.Instances[1].Instances[0]_JourPrecedent").click()
+                    browser.find_element_by_id("GInterface.Instances[0].Instances[0]_JourPrecedent").click()
                     if x == day-1:
                         time.sleep(1.5)
 
@@ -79,14 +79,14 @@ class CoursesFetcher:
                     if x == 0:
                         time.sleep(0.5)
                     time.sleep(0.5)
-                    browser.find_element_by_id("GInterface.Instances[1].Instances[0]_JourSuivant").click()
+                    browser.find_element_by_id("GInterface.Instances[0].Instances[0]_JourSuivant").click()
                     if x == day-1:
                             time.sleep(1.5)
 
-            coursinit = browser.find_elements_by_xpath("//*[@id='GInterface.Instances[1].Instances[2]']/ul/li/div/div[1]") #fetch courses
+            coursinit = browser.find_elements_by_xpath("//*[@id='GInterface.Instances[0].Instances[2]']/ul/li/div/div[1]") #fetch courses
             cours = [x.text.encode('ascii','ignore') for x in coursinit] #take the name of courses and put into a dictionnary
 
-            profsinit = browser.find_elements_by_xpath("//*[@id='GInterface.Instances[1].Instances[2]']/ul/li/div/div[2]") #fetch teachers
+            profsinit = browser.find_elements_by_xpath("//*[@id='GInterface.Instances[0].Instances[2]']/ul/li/div/div[2]") #fetch teachers
             profs = [x.text.encode('ascii','ignore') for x in profsinit] #take the name of teachers and put into a dictionnary
             return cours, profs #return a dictionnary with courses and teachers
         except Exception:
