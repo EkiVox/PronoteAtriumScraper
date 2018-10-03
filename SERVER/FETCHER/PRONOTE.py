@@ -91,7 +91,53 @@ class CoursesFetcher:
             return cours, profs #return a dictionnary with courses and teachers
         except Exception:
             return "ConnectionError"
-            
+
+    def fetchall(self): #fetch next courses and teachers using pronote
+        try:
+            cours = []
+            profs = []
+            time.sleep(5)
+            assert u"LPO COSTEBELLE - PRONOTE - Espace Élèves" in browser.title
+            browser.find_element_by_xpath("(//a[contains(text(),'Tout voir')])[2]").click()
+            time.sleep(0.5)
+
+            for x in range(5):
+                time.sleep(0.3)
+                browser.find_element_by_id("GInterface.Instances[0].Instances[0]_JourPrecedent").click()
+
+            for x in range(15):
+                time.sleep(0.7)
+                #for step in range(-5,10):
+                #return [("wesh"),("gros")]
+                coursinittmp = browser.find_elements_by_xpath("//*[@id='GInterface.Instances[0].Instances[2]']/ul/li/div/div[1]") #fetch courses
+                courstmp = [x.text.encode('ascii','ignore') for x in coursinittmp] #take the name of courses and put into a dictionnary
+                profsinittmp = browser.find_elements_by_xpath("//*[@id='GInterface.Instances[0].Instances[2]']/ul/li/div/div[2]") #fetch teachers
+                profstmp = [x.text.encode('ascii','ignore') for x in profsinittmp] #take the name of teachers and put into a dictionnary
+                ifneededinit = browser.find_elements_by_xpath("//*[@id='GInterface.Instances[0].Instances[2]']/ul/li/div/div[3]") #fetch if there is shift
+                ifneeded = [x.text.encode('ascii','ignore') for x in ifneededinit]
+                #for index, value in enumerate(courstmp):
+                #    if value == False:
+                #        courstmp[index] = profstmp[index]
+                #        profstmp[index] = ifneeded[index]
+                #
+                todel = []
+                for index, value in enumerate(courstmp):
+                    if value == 'Prof. absent' or value == "Cours annulé" or value == "Absente":
+                        todel.append(index)
+                    elif value == 'Exceptionnel' or value == "Changement de salle" or value == "Cours modifié":
+                        courstmp[index] = profstmp[index]
+                        profstmp[index] = ifneeded[index]
+                todel.reverse()
+                for index in todel:
+                    del courstmp[index]
+                    del profstmp[index]
+                cours.append(courstmp)
+                profs.append(profstmp)
+                browser.find_element_by_id("GInterface.Instances[0].Instances[0]_JourSuivant").click()
+            return cours, profs #return a dictionnary with courses and teachers 5 days before and 10 day after
+        except Exception:
+            return "ConnectionError"
+
     def displaying(self, cours, profs): #display the courses and teachers in a table
         os.system('clear')
         print '#####################################'

@@ -27,6 +27,24 @@ class fetch:
                 resp.status = falcon.HTTP_200
                 resp.body = quote
                 print "[" + req.get_param("id") + "] Courses fetched"
+class fetchall:
+    def on_get(self, req, resp):
+        if req.get_param("id"):
+            print "[" + req.get_param("id") + "] received get all"
+            quote = OPwithID().FetchAll(req.get_param("id"))
+            if quote == "ConnectionError":
+                resp.status = falcon.HTTP_503
+                print "[" + req.get_param("id") + "] ConnectionError"
+                resp.body = json.dumps("PRONOTE unreachable")
+            elif quote == "BadID":
+                resp.status = falcon.HTTP_404
+                print "[" + req.get_param("id") + "] BadID"
+                resp.body = json.dumps("Invalid ID or not associated with PRONOTE")
+            else:
+                quote = json.dumps(quote) 
+                resp.status = falcon.HTTP_200
+                resp.body = quote
+                print "[" + req.get_param("id") + "] All courses fetched"
 
 class store:
     def on_post(self, req, resp):
@@ -69,3 +87,4 @@ class store:
 api = falcon.API()
 api.add_route('/fetch', fetch())
 api.add_route('/store', store())
+api.add_route('/fetchall', fetchall())

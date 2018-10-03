@@ -11,7 +11,7 @@ import skywriter
 menu = "led"
 some_value = 7000
 some_value2 = 4000
-i = 0
+i = 5
 ledlist = ""
 allled = [13, 18, 19, 20, 21, 23, 24, 25, 26]
 isplaying = True
@@ -22,10 +22,10 @@ def handling(i):
     try:
         global ledlist
         LedController().LedtoTurnOff(allled)
-        with open('courses/day' + str(i) + '/courses.list', 'r') as coursesfile:
+        with open('courses/courses.list', 'r') as coursesfile:
             clist  = pickle.load(coursesfile)
         if type(clist) == list:
-            ledlist = LedController().HandleCourses(clist)
+            ledlist = LedController().HandleCourses(clist, i)
             print ledlist
             if type(ledlist) == list or type(ledlist) == tuple:
                 LedController().LedtoTurnOn(ledlist,dimming)
@@ -51,33 +51,33 @@ def flick(start,finish):
     if start == "east" and finish == "west":
         if menu == "led":
             i = i-1
-            if i == -11:
-                i = -10
+            if i == -1:
+                i = 0
             handling(i)
-            print "handling " + str(i)
+            print "handling " + str(i-5)
         elif menu == "music":
             os.system("mpc prev")
 
     elif start == "west" and finish == "east":
         if menu == "led":
             i = i+1
-            if i == 11:
-                i = 10
+            if i == 15:
+                i = 14
             handling(i)
-            print "handling " + str(i)
+            print "handling " + str(i-5)
         elif menu == "music":
             os.system("mpc next")
 
     elif start == "south" and finish == "north":
         if menu == "led":
-            i = 0
+            i = 5
             handling(i)
-            print "handling " + str(i)
+            print "handling " + str(i-5)
         elif menu == "music":
-            i = 0
+            i = 5
             menu = "led"
             handling(i)
-            print "handling " + str(i)
+            print "handling " + str(i-5)
 
     elif start == "north" and finish == "south":
         if menu == "led":

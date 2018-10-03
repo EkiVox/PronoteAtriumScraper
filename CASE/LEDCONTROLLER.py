@@ -14,8 +14,8 @@ def initializer():
         globals()["p" + str(i)].start(0)
 
 class LedController:
-    def fetchCourses(self, ip, id, day):
-        response = requests.get("http://" + ip + ":8000/fetch?id=" + id + "&day=" + str(day) + "")
+    def fetchCourses(self, ip, id):
+        response = requests.get("http://" + ip + ":8000/fetchall?id=" + id + "")
         print response
         if response.status_code == 200:
             return response.json()
@@ -24,21 +24,12 @@ class LedController:
         elif response.status_code == 404:
             return "BadID"
 
-    def HandleCourses(self, list):
+    def HandleCourses(self, list, day):
         led_to_turn = []
-        courses = list[0]
-        teachers = list[1]
+        courses = list[0][day]
+        teachers = list[1][day]
         for cours in enumerate(courses):
-            if cours[1] == "Prof. absent" or cours[1] == "Cours annul":
-                del courses[cours[0]]
-                del teachers[cours[0]]
-            elif cours[1] == "Exceptionnel":
-                courses[cours[0]] = teachers[cours[0]]
-                teachers[cours[0]] = "Indeterminable"
-            elif cours[1] == "Changement de salle":
-                courses[cours[0]] = teachers[cours[0]]
-                teachers[cours[0]] = "Indeterminable"
-            elif cours[1] == u"Cours modifi":
+            if cours[1].isupper() == False:
                 courses[cours[0]] = teachers[cours[0]]
                 teachers[cours[0]] = "Indeterminable"
         #print courses
@@ -52,24 +43,30 @@ class LedController:
             elif cours == "MATHEMATIQUES":
                 led_to_turn.append(18)
 
-            elif cours == "ED.PHYSIQUE & SPORT.":
-                led_to_turn.append(13)
+            #elif cours == "ED.PHYSIQUE & SPORT.":
+            #    led_to_turn.append(13)
 
+            elif cours == "PHILOSOPHIE":
+                led_to_turn.append(13)
             elif cours == "ESPAGNOL LV2":
                 led_to_turn.append(21)
 
             elif cours == "SCIENCES INGENIEUR":
                 led_to_turn.append(23)
 
-            elif cours == "FRANCAIS":
-                led_to_turn.append(24)
+            #elif cours == "FRANCAIS":
+            #    led_to_turn.append(24)
+
+            elif cours == "SPE MATHS":
+                 led_to_turn.append(24)
 
             elif cours == "HISTOIRE & GEOGRAPH.":
                 led_to_turn.append(25)
 
             elif cours == "ANG. LV1":
                 led_to_turn.append(26)
-                
+            else:
+                print "cours non reconnu ou n'a pas de led a son nom:" + cours
         return led_to_turn
 
     def LedtoTurnOn(self, ledlist, dim):

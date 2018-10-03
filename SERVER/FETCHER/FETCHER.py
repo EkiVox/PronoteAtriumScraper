@@ -16,6 +16,17 @@ class OPwithID:
             courseslist = CoursesFetcher().fetch(day) #fetch courses and teachers
             CoursesFetcher().close() #Close browser
             return courseslist
+        
+    def FetchAll(self, id):
+        creditentials = Atrium().reuseCreditentials(id)
+        if creditentials == "BadID":
+            return creditentials
+        else:
+            CoursesFetcher().initialize()
+            CoursesFetcher().login(creditentials[0], creditentials[1])
+            courseslist = CoursesFetcher().fetchall() #fetch courses and teachers
+            CoursesFetcher().close() #Close browser
+            return courseslist
 
     def Store(self, id, password, credits):
         self.hasher = hashlib.md5()
