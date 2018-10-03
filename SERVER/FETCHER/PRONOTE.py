@@ -45,7 +45,7 @@ class CoursesFetcher:
         global options
         #setup headless
         options = webdriver.ChromeOptions()
-        #options.add_argument('headless')
+        options.add_argument('headless')
         #setup chromedriver
         browser = webdriver.Chrome(chrome_options=options)
         browser.implicitly_wait(15)
