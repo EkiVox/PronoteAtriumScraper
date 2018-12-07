@@ -15,7 +15,7 @@ def initializer():
 
 class LedController:
     def fetchCourses(self, ip, id):
-        response = requests.get("http://" + ip + ":8000/fetchall?id=" + id + "")
+        response = requests.get("https://" + ip + ":21/fetchall?id=" + id + "")
         print response
         if response.status_code == 200:
             return response.json()
